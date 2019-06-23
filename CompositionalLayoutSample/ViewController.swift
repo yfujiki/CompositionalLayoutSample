@@ -149,7 +149,7 @@ class ViewController: UIViewController {
 
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(240)),
+                                               heightDimension: .fractionalWidth(0.67)),
             subitem: item,
             count: 1)
         let section = NSCollectionLayoutSection(group: group)
