@@ -49,75 +49,15 @@ class ViewController: UIViewController {
 
     // MARK: Other Private Properties
     private lazy var compositionalLayout: UICollectionViewCompositionalLayout = {
-        let layout = UICollectionViewCompositionalLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-
             switch Section(rawValue: sectionIndex) {
             case .brandNames:
-                let item = NSCollectionLayoutItem(
-                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                       heightDimension: .fractionalHeight(1.0)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 8.0, bottom: 0.0, trailing: 8.0)
-
-                let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(136),
-                                                       heightDimension: .absolute(44)),
-                    subitem: item,
-                    count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-
-                let headerView = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-                headerView.pinToVisibleBounds = true
-                section.boundarySupplementaryItems = [headerView]
-
-                section.contentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
-
-                section.orthogonalScrollingBehavior = .continuous
-                return section
+                return self?.setupBrandNamesSection()
             case .catFoods:
-                let item = NSCollectionLayoutItem(
-                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                       heightDimension: .fractionalHeight(1.0)))
-                let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                       heightDimension: .absolute(80)),
-                    subitem: item,
-                    count: 2)
-                let section = NSCollectionLayoutSection(group: group)
-
-                let headerView = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-                headerView.pinToVisibleBounds = true
-                section.boundarySupplementaryItems = [headerView]
-
-                section.contentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
-
-                section.orthogonalScrollingBehavior = .continuous
-                return section
+                return self?.setupCatFoodsSection()
             case .cats:
-                let item = NSCollectionLayoutItem(
-                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
-                                                       heightDimension: .fractionalHeight(0.9)))
-                item.edgeSpacing = NSCollectionLayoutEdgeSpacing(
-                    leading: NSCollectionLayoutSpacing.flexible(0.0),
-                    top: NSCollectionLayoutSpacing.flexible(0.0),
-                    trailing: NSCollectionLayoutSpacing.flexible(0.0),
-                    bottom: NSCollectionLayoutSpacing.flexible(0.0))
-
-                let group = NSCollectionLayoutGroup.vertical(
-                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                       heightDimension: .estimated(240)),
-                    subitem: item,
-                    count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-
-                let headerView = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-                headerView.pinToVisibleBounds = true
-                section.boundarySupplementaryItems = [headerView]
-
-                section.contentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
-
-                return section
+                return self?.setupCatsSection()
             case .none:
                 fatalError("Should not be none ")
             }
@@ -135,6 +75,98 @@ class ViewController: UIViewController {
         collectionView.collectionViewLayout = compositionalLayout
         collectionView.dataSource = self
         collectionView.contentInsetAdjustmentBehavior = .scrollableAxes
+    }
+
+    // MARK: Section Provider
+    func setupBrandNamesSection() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .fractionalHeight(1.0)))
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 8.0, bottom: 0.0, trailing: 8.0)
+
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(136),
+                                               heightDimension: .absolute(44)),
+            subitem: item,
+            count: 1)
+        let section = NSCollectionLayoutSection(group: group)
+
+        let headerView = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .absolute(44)),
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top)
+        headerView.pinToVisibleBounds = true
+        section.boundarySupplementaryItems = [headerView]
+
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
+                                                        leading: 0.0,
+                                                        bottom: 16.0,
+                                                        trailing: 0.0)
+
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+
+        return section
+    }
+
+    func setupCatFoodsSection() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .fractionalHeight(1.0)))
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
+                                               heightDimension: .absolute(80)),
+            subitem: item,
+            count: 1)
+        let section = NSCollectionLayoutSection(group: group)
+
+        let headerView = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .absolute(44)),
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top)
+        headerView.pinToVisibleBounds = true
+        section.boundarySupplementaryItems = [headerView]
+
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
+                                                        leading: 0.0,
+                                                        bottom: 16.0,
+                                                        trailing: 0.0)
+
+        section.orthogonalScrollingBehavior = .groupPaging
+        return section
+    }
+
+    func setupCatsSection() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
+                                               heightDimension: .fractionalHeight(0.9)))
+        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(
+            leading: NSCollectionLayoutSpacing.flexible(0.0),
+            top: NSCollectionLayoutSpacing.flexible(0.0),
+            trailing: NSCollectionLayoutSpacing.flexible(0.0),
+            bottom: NSCollectionLayoutSpacing.flexible(0.0))
+
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .estimated(240)),
+            subitem: item,
+            count: 1)
+        let section = NSCollectionLayoutSection(group: group)
+
+        let headerView = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .absolute(44)),
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top)
+        headerView.pinToVisibleBounds = true
+        section.boundarySupplementaryItems = [headerView]
+
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
+                                                        leading: 0.0,
+                                                        bottom: 16.0,
+                                                        trailing: 0.0)
+        return section
     }
 }
 
