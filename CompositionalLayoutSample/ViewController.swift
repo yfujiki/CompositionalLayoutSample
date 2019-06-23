@@ -66,6 +66,13 @@ class ViewController: UIViewController {
                     subitem: item,
                     count: 1)
                 let section = NSCollectionLayoutSection(group: group)
+
+                let headerView = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                headerView.pinToVisibleBounds = true
+                section.boundarySupplementaryItems = [headerView]
+
+                section.contentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
+
                 section.orthogonalScrollingBehavior = .continuous
                 return section
             case .catFoods:
@@ -78,6 +85,13 @@ class ViewController: UIViewController {
                     subitem: item,
                     count: 2)
                 let section = NSCollectionLayoutSection(group: group)
+
+                let headerView = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                headerView.pinToVisibleBounds = true
+                section.boundarySupplementaryItems = [headerView]
+
+                section.contentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
+
                 section.orthogonalScrollingBehavior = .continuous
                 return section
             case .cats:
@@ -96,6 +110,13 @@ class ViewController: UIViewController {
                     subitem: item,
                     count: 1)
                 let section = NSCollectionLayoutSection(group: group)
+
+                let headerView = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                headerView.pinToVisibleBounds = true
+                section.boundarySupplementaryItems = [headerView]
+
+                section.contentInsets = NSDirectionalEdgeInsets(top: 16.0, leading: 0.0, bottom: 16.0, trailing: 0.0)
+
                 return section
             case .none:
                 fatalError("Should not be none ")
