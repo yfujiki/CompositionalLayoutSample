@@ -47,13 +47,13 @@ class ViewController: UIViewController {
         return images
     }()
 
-
     // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         collectionView.register(UINib(nibName: "LabelCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
         collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "imageCell")
+        collectionView.register(UINib(nibName: "HeaderCollectionReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerView")
         collectionView.collectionViewLayout = UICollectionViewFlowLayout()
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -100,6 +100,25 @@ extension ViewController: UICollectionViewDataSource {
             fatalError("Should not be none")
         }
     }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerView", for: indexPath) as! HeaderCollectionReusableView
+            switch Section(rawValue: indexPath.section) {
+            case .brandNames:
+                headerView.setText("Brand names")
+            case .catFoods:
+                headerView.setText("Cat foods")
+            case .cats:
+                headerView.setText("Cats")
+            case .none:
+                fatalError("Should not be none")
+            }
+            return headerView
+        } else {
+            return UICollectionReusableView()
+        }
+    }
 }
 
 extension ViewController: UICollectionViewDelegateFlowLayout {
@@ -114,6 +133,14 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
         case .none:
             fatalError("Should not be none")
         }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 44)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
 }
 
