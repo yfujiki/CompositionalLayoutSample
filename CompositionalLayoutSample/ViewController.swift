@@ -47,6 +47,63 @@ class ViewController: UIViewController {
         return images
     }()
 
+    // MARK: Other Private Properties
+    private lazy var compositionalLayout: UICollectionViewCompositionalLayout = {
+        let layout = UICollectionViewCompositionalLayout {
+            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+
+
+            switch Section(rawValue: sectionIndex) {
+            case .brandNames:
+                let item = NSCollectionLayoutItem(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .fractionalHeight(1.0)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0.0, leading: 8.0, bottom: 0.0, trailing: 8.0)
+
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .estimated(136),
+                                                       heightDimension: .absolute(44)),
+                    subitem: item,
+                    count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                return section
+            case .catFoods:
+                let item = NSCollectionLayoutItem(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .fractionalHeight(1.0)))
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .absolute(80)),
+                    subitem: item,
+                    count: 2)
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                return section
+            case .cats:
+                let item = NSCollectionLayoutItem(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
+                                                       heightDimension: .fractionalHeight(0.9)))
+                item.edgeSpacing = NSCollectionLayoutEdgeSpacing(
+                    leading: NSCollectionLayoutSpacing.flexible(0.0),
+                    top: NSCollectionLayoutSpacing.flexible(0.0),
+                    trailing: NSCollectionLayoutSpacing.flexible(0.0),
+                    bottom: NSCollectionLayoutSpacing.flexible(0.0))
+
+                let group = NSCollectionLayoutGroup.vertical(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .estimated(240)),
+                    subitem: item,
+                    count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                return section
+            case .none:
+                fatalError("Should not be none ")
+            }
+        }
+        return layout
+    }()
+
     // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,9 +111,8 @@ class ViewController: UIViewController {
         collectionView.register(UINib(nibName: "LabelCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
         collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "imageCell")
         collectionView.register(UINib(nibName: "HeaderCollectionReusableView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerView")
-        collectionView.collectionViewLayout = UICollectionViewFlowLayout()
+        collectionView.collectionViewLayout = compositionalLayout
         collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.contentInsetAdjustmentBehavior = .scrollableAxes
     }
 }
@@ -118,29 +174,6 @@ extension ViewController: UICollectionViewDataSource {
         } else {
             return UICollectionReusableView()
         }
-    }
-}
-
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch Section(rawValue: indexPath.section) {
-        case .brandNames:
-            return CGSize(width: 120, height: 44)
-        case .catFoods:
-            return CGSize(width: 120, height: 80)
-        case .cats:
-            return CGSize(width: 320, height: 240)
-        case .none:
-            fatalError("Should not be none")
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 44)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
 }
 
