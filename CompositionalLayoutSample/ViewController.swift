@@ -163,7 +163,7 @@ class ViewController: UIViewController {
         headerView.pinToVisibleBounds = true
         section.boundarySupplementaryItems = [headerView]
 
-        section.interGroupSpacing = 10
+        section.interGroupSpacing = 20
         
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
                                                         leading: 0.0,
