@@ -140,7 +140,7 @@ class ViewController: UIViewController {
     func setupCatsSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
-                                               heightDimension: .fractionalHeight(0.9)))
+                                               heightDimension: .fractionalHeight(0.9))) // This height does not have any effect. Bug?
         item.edgeSpacing = NSCollectionLayoutEdgeSpacing(
             leading: NSCollectionLayoutSpacing.flexible(0.0),
             top: NSCollectionLayoutSpacing.flexible(0.0),
@@ -149,9 +149,10 @@ class ViewController: UIViewController {
 
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .fractionalWidth(0.67)),
+                                               heightDimension: .fractionalWidth(0.60)),
             subitem: item,
             count: 1)
+        
         let section = NSCollectionLayoutSection(group: group)
 
         let headerView = NSCollectionLayoutBoundarySupplementaryItem(
@@ -162,6 +163,8 @@ class ViewController: UIViewController {
         headerView.pinToVisibleBounds = true
         section.boundarySupplementaryItems = [headerView]
 
+        section.interGroupSpacing = 10
+        
         section.contentInsets = NSDirectionalEdgeInsets(top: 16.0,
                                                         leading: 0.0,
                                                         bottom: 16.0,
@@ -204,6 +207,7 @@ extension ViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageCollectionViewCell
             let image = cats[indexPath.item]
             cell.setImage(image)
+            cell.cornerRadius = 10
             return cell
         case .none:
             fatalError("Should not be none")
